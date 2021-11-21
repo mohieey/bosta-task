@@ -30,13 +30,13 @@ const generateJWT = (user) => {
 };
 
 function validateUser(user) {
-  const schema = {
+  const schema = Joi.object({
     username: Joi.string().min(5).max(50).required(),
     email: Joi.string().min(5).max(25).required().email(),
     password: Joi.string().min(5).max(255).required(),
-  };
+  });
 
-  return Joi.validate(user, schema);
+  return schema.validate(user);
 }
 
 const verifyUser = (username) => {

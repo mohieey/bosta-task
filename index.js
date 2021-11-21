@@ -4,12 +4,19 @@ const axios = require("axios");
 //Routes
 const users = require("./routes/users");
 const verify = require("./routes/verify");
+const checks = require("./routes/checks");
 
 const app = express();
 app.use(express.json());
 
 app.use("/api/user", users);
 app.use("/api/verify", verify);
+app.use("/api/check", checks);
+
+app.post("/", (req, res) => {
+  console.log(req.body.arr[0]);
+  res.send(req.body.arr[1]);
+});
 
 app.listen(3000, () => {
   console.log("Listening on http://localhost:3000");
