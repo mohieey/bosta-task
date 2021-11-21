@@ -1,6 +1,7 @@
 const express = require("express");
 
-const { addUser, getUser, validateUser } = require("../database/users");
+const { addUser, getUser } = require("../database/users");
+const validateUser = require("../utils/validateUser");
 const {
   generateCode,
   sendVerificationCode,

@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const Joi = require("joi");
 
 const crypto = require("crypto");
 
@@ -29,16 +28,6 @@ const generateJWT = (user) => {
   return token;
 };
 
-function validateUser(user) {
-  const schema = Joi.object({
-    username: Joi.string().min(5).max(50).required(),
-    email: Joi.string().min(5).max(25).required().email(),
-    password: Joi.string().min(5).max(255).required(),
-  });
-
-  return schema.validate(user);
-}
-
 const verifyUser = (username) => {
   users[username].isVerified = true;
   console.log(users[username]);
@@ -49,4 +38,4 @@ const verifyUser = (username) => {
 // console.log(addUser("mohdfdfiey", "ifhd", "mohhiey@gmail.com"));
 // console.log(users);
 
-module.exports = { addUser, getUser, validateUser, verifyUser };
+module.exports = { addUser, getUser, verifyUser };
