@@ -1,4 +1,5 @@
 const axios = require("axios");
+const getInstance = require("../utils/configureRequests");
 
 const PollRecord = require("../models/pollRecord");
 
@@ -7,10 +8,13 @@ const runningMonitors = {};
 const startMonitoring = (check) => {
   runningMonitors[check.id] = setInterval(async () => {
     const start = Date.now();
+
     console.log(`Check NO is ${check.name}`);
+
     let response;
+
     try {
-      response = await axios.get(`${check.protocol}://${check.url}/`);
+      response = await getInstance(check).get();
     } catch (error) {
       console.log("fail no 1");
       console.log(error);
@@ -22,6 +26,7 @@ const startMonitoring = (check) => {
           continue;
         }
       }
+
       check.history.push(new PollRecord(503, 0));
 
       return console.log("errr");
@@ -29,7 +34,13 @@ const startMonitoring = (check) => {
 
     console.log(response.status);
     const end = Date.now();
-    check.history.push(new PollRecord(response.status, end - start));
+    check.history.push(
+      new PollRecord(
+        response.status,
+        end - start,
+        check.assert.statusCode === response.status
+      )
+    );
   }, check.interval);
 };
 

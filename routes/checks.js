@@ -18,6 +18,7 @@ router.post("/", [auth], (req, res) => {
     return res.status(400).send(result.error.details[0].message);
 
   const newCheck = addCheck(req.user.username, req.body);
+  if (!newCheck) return res.send("already used check name");
   startMonitoring(newCheck);
 
   return res.send(newCheck);
