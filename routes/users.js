@@ -1,6 +1,10 @@
 const express = require("express");
 
 const { addUser, getUser, validateUser } = require("../database/users");
+const {
+  generateCode,
+  sendVerificationCode,
+} = require("../utils/emailVerification");
 
 const router = express.Router();
 
@@ -11,7 +15,12 @@ router.post("/", (req, res) => {
 
   const { username, password, email } = req.body;
 
+  let user = getUser(username);
+  if (user) return res.send("dublicate username!");
+
   const token = addUser(username, password, email);
+  const verificationCode = generateCode(username);
+  sendVerificationCode(username, email, verificationCode);
 
   return res.send(token);
 });

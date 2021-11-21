@@ -39,9 +39,14 @@ function validateUser(user) {
   return Joi.validate(user, schema);
 }
 
+const verifyUser = (username) => {
+  users[username].isVerified = true;
+  console.log(users[username]);
+};
+
 // console.log(addUser("mohiey", "ifhd", "mohhiey@gmail.com"));
 // console.log(addUser("df", "ifhd", "mohhiey@gmail.com"));
 // console.log(addUser("mohdfdfiey", "ifhd", "mohhiey@gmail.com"));
 // console.log(users);
 
-module.exports = { addUser, getUser, validateUser };
+module.exports = { addUser, getUser, validateUser, verifyUser };
