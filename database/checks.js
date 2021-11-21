@@ -6,24 +6,25 @@ const checks = {};
 
 const addCheck = (username, checkData) => {
   const newCheck = new Check(checkData);
-  if (username in checks) checks[username][checkData.name] = checkData;
+  if (username in checks) checks[username][newCheck.name] = newCheck;
   else {
     checks[username] = {};
-    checks[username][checkData.name] = checkData;
+    checks[username][newCheck.name] = newCheck;
   }
 
   return newCheck;
 };
 
 const getCheck = (username, checkName) => {
-  return users[username][checkName];
+  //   return checks[username][checkName];
+  return checks;
 };
 
-function validateCheck(user) {
+function validateCheck(check) {
   const schema = Joi.object({
     name: Joi.string().required(),
     url: Joi.string()
-      .pattern(RegExp(/^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/))
+      .pattern(RegExp(/[^\s$.?#].[^\s]*$/))
       .messages({
         "string.pattern.base": `"Invalid url`,
       })
