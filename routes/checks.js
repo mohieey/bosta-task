@@ -31,10 +31,6 @@ router.post("/start/:id", [auth], async (req, res) => {
   res.send("started");
 });
 
-router.get("/report/:id", [auth], async (req, res) => {
-  res.send(await getAllChecks(req.user._id));
-});
-
 router.delete("/:id", [auth], async (req, res) => {
   const deletedCheck = await deleteCheck(req.user._id, req.params.id);
 
