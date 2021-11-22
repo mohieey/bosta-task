@@ -31,6 +31,10 @@ router.post("/start/:id", [auth], async (req, res) => {
   res.send("started");
 });
 
+router.get("/report/:id", [auth], async (req, res) => {
+  res.send(await getAllChecks(req.user._id));
+});
+
 router.delete("/:id", [auth], async (req, res) => {
   const deletedCheck = await deleteCheck(req.user._id, req.params.id);
 
@@ -64,8 +68,15 @@ router.post("/", [auth], (req, res) => {
   return res.send(newCheck);
 });
 
-router.get("/", async (req, res) => {
-  res.send(await getAllChecks());
+router.get("/:id", [auth], async (req, res) => {
+  const check = await getCheck(req.user._id, req.params.id);
+  if (!check) return res.status(404).send("not found");
+
+  res.send(check);
+});
+
+router.get("/", [auth], async (req, res) => {
+  res.send(await getAllChecks(req.user._id));
 });
 
 module.exports = router;

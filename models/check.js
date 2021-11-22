@@ -57,6 +57,7 @@ const schema = new Schema({
     type: Boolean,
     default: false,
   },
+  lastStatus: { type: Number },
   user: { type: Schema.Types.ObjectId, required: true, ref: "User" },
 });
 
@@ -65,5 +66,11 @@ schema.virtual("pollRecords", {
   localField: "_id",
   foreignField: "check",
 });
+
+schema.methods.toJSON = function () {
+  const check = this.toObject();
+  check["pollRecords"] = this.pollRecords;
+  return check;
+};
 
 module.exports = model("Check", schema);

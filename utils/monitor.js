@@ -1,51 +1,13 @@
-const axios = require("axios");
 const getInstance = require("../utils/configureRequests");
 
 const PollRecord = require("../models/pollRecord");
+const Check = require("../models/check");
+const savePollRecord = require("../database/pollRecords");
 
 const runningMonitors = {};
 
 const startMonitoring = (check) => {
-  runningMonitors[check.id + check.user] = setInterval(async () => {
-    const start = Date.now();
-
-    console.log(`Check NO is ${check.name}`);
-    console.log(`Check NO is ${check}`);
-
-    let response;
-
-    try {
-      response = await getInstance(check).get();
-    } catch (error) {
-      console.log("fail no 1");
-      console.log(error);
-      for (let i = 1; i <= check.threshold - 1; i++) {
-        try {
-          response = await axios.get(url[1]);
-        } catch (error) {
-          console.log(`fail no ${i + 1}`);
-          continue;
-        }
-      }
-
-      new PollRecord({
-        status: 503,
-        responseTime: 0,
-        check: check._id,
-      }).save();
-
-      return console.log("errr");
-    }
-
-    console.log(response.status);
-    const end = Date.now();
-    new PollRecord({
-      status: response.status,
-      responseTime: end - start,
-      assertion: check.assert.statusCode === response.status,
-      check: check._id,
-    }).save();
-  }, check.interval);
+  runningMonitors[check.id + check.user] = watchGenerator(check);
 };
 
 const stopMonitoring = (checkIdUserId) => {
@@ -54,6 +16,50 @@ const stopMonitoring = (checkIdUserId) => {
   clearInterval(runningMonitors[checkIdUserId]);
   delete runningMonitors[checkIdUserId];
   return true;
+};
+
+const watchGenerator = (check) => {
+  return setInterval(async () => {
+    console.log(`Check NO is ${check.name}`);
+    // console.log(`Check NO is ${check}`);
+
+    response = await poll(check);
+
+    savePollRecord(check, response);
+  }, check.interval);
+};
+
+const poll = async (check) => {
+  let response = {};
+  let instance = getInstance(check);
+
+  let start = Date.now();
+  let end;
+
+  try {
+    response = await instance.get();
+  } catch (error) {
+    console.log("fail no 1");
+    // console.log(error);
+    for (let i = 1; i <= check.threshold - 1; i++) {
+      start = Date.now();
+      try {
+        response = await instance.get();
+        end = new Date();
+        response["responseTime"] = end - start;
+        return response;
+      } catch (error) {
+        console.log(`fail no ${i + 1}`);
+        continue;
+      }
+    }
+    return { status: 503, responseTime: 0 };
+  }
+
+  end = Date.now();
+  response["responseTime"] = end - start;
+
+  return response;
 };
 
 module.exports = { startMonitoring, stopMonitoring };

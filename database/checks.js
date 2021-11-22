@@ -9,7 +9,9 @@ const addCheck = (userId, checkData) => {
 };
 
 const getCheck = async (userId, checkId) => {
-  return await Check.findOne({ user: userId, _id: checkId });
+  return await Check.findOne({ user: userId, _id: checkId }).populate(
+    "pollRecords"
+  );
 };
 
 const deleteCheck = async (userId, checkId) => {
@@ -28,8 +30,8 @@ const updateCheck = async (userId, checkId, newFields) => {
   return checkToUpdate;
 };
 
-const getAllChecks = async () => {
-  return await Check.find();
+const getAllChecks = async (userId) => {
+  return await Check.find({ user: userId });
 };
 
 module.exports = {
