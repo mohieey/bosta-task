@@ -1,8 +1,23 @@
-module.exports = class {
-  constructor(status, responseTime, assertion) {
-    this.status = status;
-    this.responseTime = responseTime;
-    this.date = Date.now();
-    this.assertion = assertion || false;
-  }
-};
+const { Schema, model } = require("mongoose");
+
+const schema = new Schema({
+  status: {
+    type: Number,
+    required: true,
+  },
+  responseTime: {
+    type: Number,
+    required: true,
+  },
+  date: {
+    type: Date,
+    default: new Date(),
+  },
+  assertion: {
+    type: Boolean,
+    default: false,
+  },
+  check: { type: Schema.Types.ObjectId, required: true, ref: "Check" },
+});
+
+module.exports = model("PollRecord", schema);

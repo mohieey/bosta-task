@@ -5,22 +5,23 @@ const crypto = require("crypto");
 const User = require("../models/user");
 const { salt, jwtPrivateKey } = require("../env");
 
-const users = {};
-
 const addUser = (username, password, email) => {
-  let hashedPassword = crypto
+  password = crypto
     .pbkdf2Sync(password, salt, 1000, 64, `sha512`)
     .toString(`hex`);
 
-  const newUser = new User(username, hashedPassword, email);
+  const newUser = new User({ username, password, email });
+  newUser.save();
 
-  users[username] = newUser;
-
-  return generateJWT({ username: newUser.username, email: newUser.email });
+  return generateJWT({
+    _id: newUser._id,
+    username: newUser.username,
+    email: newUser.email,
+  });
 };
 
-const getUser = (username) => {
-  return users[username];
+const getUser = async (username) => {
+  return await User.findOne({ username: username });
 };
 
 const generateJWT = (user) => {
@@ -28,14 +29,11 @@ const generateJWT = (user) => {
   return token;
 };
 
-const verifyUser = (username) => {
-  users[username].isVerified = true;
-  console.log(users[username]);
+const verifyUser = async (username) => {
+  const userToVerify = await User.findOneAndUpdate(
+    { username: username },
+    { isVerified: true }
+  );
 };
-
-// console.log(addUser("mohiey", "ifhd", "mohhiey@gmail.com"));
-// console.log(addUser("df", "ifhd", "mohhiey@gmail.com"));
-// console.log(addUser("mohdfdfiey", "ifhd", "mohhiey@gmail.com"));
-// console.log(users);
 
 module.exports = { addUser, getUser, verifyUser };

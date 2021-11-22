@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const axios = require("axios");
 
 //Routes
@@ -17,6 +18,10 @@ app.post("/", (req, res) => {
   console.log(req.body.arr[0]);
   res.send(req.body.arr[1]);
 });
+
+mongoose.connect("mongodb://localhost:27017/monitoringapp", () =>
+  console.log("Connected to MongoDB")
+);
 
 app.listen(3000, () => {
   console.log("Listening on http://localhost:3000");

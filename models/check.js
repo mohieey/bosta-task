@@ -1,37 +1,69 @@
-const crypto = require("crypto");
+const { Schema, model } = require("mongoose");
 
-module.exports = class {
-  constructor({
-    name,
-    url,
-    protocol,
-    path,
-    port,
-    webhook,
-    timeout,
-    interval,
-    threshold,
-    authentication,
-    httpHeaders,
-    assert,
-    tags,
-    ignoreSSL,
-  }) {
-    this.id = crypto.randomBytes(20).toString("hex");
-    this.name = name;
-    this.url = url;
-    this.protocol = protocol;
-    this.path = path || "";
-    this.port = port || "";
-    this.webhook = webhook || "";
-    this.timeout = timeout || 5000;
-    this.interval = interval || 10 * 60 * 1000;
-    this.threshold = threshold || 1;
-    this.authentication = authentication || {};
-    this.httpHeaders = httpHeaders || {};
-    this.assert = assert || { statusCode: 200 };
-    this.tags = tags || [];
-    this.ignoreSSL = ignoreSSL;
-    this.history = [];
-  }
-};
+const schema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  url: {
+    type: String,
+    required: true,
+  },
+  protocol: {
+    type: String,
+    required: true,
+  },
+  path: {
+    type: String,
+    default: "",
+  },
+  port: {
+    type: String,
+    default: "",
+  },
+  webhook: {
+    type: String,
+    default: "",
+  },
+  timeout: {
+    type: Number,
+    default: 5000,
+  },
+  interval: {
+    type: Number,
+    default: 10 * 60 * 1000,
+  },
+  threshold: {
+    type: Number,
+    default: 1,
+  },
+  authentication: {
+    type: Object,
+    default: {},
+  },
+  httpHeaders: {
+    type: Object,
+    default: {},
+  },
+  assert: {
+    type: Object,
+    default: { statusCode: 200 },
+  },
+  tags: {
+    type: [String],
+    default: [],
+  },
+  ignoreSSL: {
+    type: Boolean,
+    default: false,
+  },
+  user: { type: Schema.Types.ObjectId, required: true, ref: "User" },
+});
+
+schema.virtual("pollRecords", {
+  ref: "PollRecord",
+  localField: "_id",
+  foreignField: "check",
+});
+
+module.exports = model("Check", schema);

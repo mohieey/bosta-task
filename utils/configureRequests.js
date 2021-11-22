@@ -1,20 +1,22 @@
 const axios = require("axios");
 const https = require("https");
 
-module.exports = ({
-  url,
-  path,
-  port,
-  protocol,
-  authentication,
-  httpHeaders,
-  timeout,
-  ignoreSSL,
-}) => {
+module.exports = (check) => {
+  const {
+    url,
+    path,
+    port,
+    protocol,
+    authentication,
+    httpHeaders,
+    timeout,
+    ignoreSSL,
+  } = check;
+
   return axios.create({
     url: path,
     baseURL: `${protocol}://${url}${port}`,
-    headers: { ...httpHeaders, ...authentication },
+    header: { ...httpHeaders, ...authentication },
     timeout,
     httpsAgent: new https.Agent({
       rejectUnauthorized: ignoreSSL,

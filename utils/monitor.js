@@ -6,10 +6,11 @@ const PollRecord = require("../models/pollRecord");
 const runningMonitors = {};
 
 const startMonitoring = (check) => {
-  runningMonitors[check.id] = setInterval(async () => {
+  runningMonitors[check.id + check.user] = setInterval(async () => {
     const start = Date.now();
 
     console.log(`Check NO is ${check.name}`);
+    console.log(`Check NO is ${check}`);
 
     let response;
 
@@ -27,26 +28,32 @@ const startMonitoring = (check) => {
         }
       }
 
-      check.history.push(new PollRecord(503, 0));
+      new PollRecord({
+        status: 503,
+        responseTime: 0,
+        check: check._id,
+      }).save();
 
       return console.log("errr");
     }
 
     console.log(response.status);
     const end = Date.now();
-    check.history.push(
-      new PollRecord(
-        response.status,
-        end - start,
-        check.assert.statusCode === response.status
-      )
-    );
+    new PollRecord({
+      status: response.status,
+      responseTime: end - start,
+      assertion: check.assert.statusCode === response.status,
+      check: check._id,
+    }).save();
   }, check.interval);
 };
 
-const stopMonitoring = (checkId) => {
-  clearInterval(runningMonitors[checkId]);
-  delete runningMonitors[checkId];
+const stopMonitoring = (checkIdUserId) => {
+  if (!runningMonitors[checkIdUserId]) return false;
+
+  clearInterval(runningMonitors[checkIdUserId]);
+  delete runningMonitors[checkIdUserId];
+  return true;
 };
 
 module.exports = { startMonitoring, stopMonitoring };

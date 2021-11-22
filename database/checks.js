@@ -1,42 +1,35 @@
+// const Check = require("../models/check");
 const Check = require("../models/check");
 
-const checks = {};
-
-const addCheck = (username, checkData) => {
-  const newCheck = new Check(checkData);
-  if (username in checks) {
-    checks[username][newCheck.id] = newCheck;
-  } else {
-    checks[username] = {};
-    checks[username][newCheck.id] = newCheck;
-  }
+const addCheck = (userId, checkData) => {
+  const newCheck = new Check({ ...checkData, user: userId });
+  newCheck.save();
 
   return newCheck;
 };
 
-const getCheck = (username, checkId) => {
-  return checks[username][checkId];
+const getCheck = async (userId, checkId) => {
+  return await Check.findOne({ user: userId, _id: checkId });
 };
 
-const deleteCheck = (username, checkId) => {
-  if (!checks[username]) return;
-  const deletedCheck = getCheck(username, checkId);
-  delete checks[username][checkId];
+const deleteCheck = async (userId, checkId) => {
+  const deletedCheck = await Check.findOne({ user: userId, _id: checkId });
+
   return deletedCheck;
 };
 
-const updateCheck = (username, checkId, newFields) => {
-  let checkToUpdate = getCheck(username, checkId);
+const updateCheck = async (userId, checkId, newFields) => {
+  let checkToUpdate = await Check.findOneAndUpdate(
+    { user: userId, _id: checkId },
+    newFields
+  );
   if (!checkToUpdate) return;
-
-  checkToUpdate = { ...checkToUpdate, ...newFields };
-  checks[username][checkId] = checkToUpdate;
 
   return checkToUpdate;
 };
 
-const getAllChecks = () => {
-  return checks;
+const getAllChecks = async () => {
+  return await Check.find();
 };
 
 module.exports = {

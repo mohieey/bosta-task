@@ -9,14 +9,14 @@ const {
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const result = validateUser(req.body);
   if (result.error)
     return res.status(400).send(result.error.details[0].message);
 
   const { username, password, email } = req.body;
 
-  let user = getUser(username);
+  let user = await getUser(username);
   if (user) return res.send("dublicate username!");
 
   const token = addUser(username, password, email);
