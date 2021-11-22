@@ -1,5 +1,7 @@
 module.exports = function (check) {
   const report = {
+    date: new Date(),
+    url: check.url,
     lastStatus: check.lastStatus,
     availability: 0,
     outages: 0,

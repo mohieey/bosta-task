@@ -1,10 +1,13 @@
 const Check = require("../models/check");
 const PollRecord = require("../models/pollRecord");
+const { updateCheck } = require("./checks");
 
 module.exports = function (check, response) {
-  Check.findByIdAndUpdate(check._id, { lastStatus: response.status }).then();
+  updateCheck(check.user, check._id, { lastStatus: response.status });
+
   new PollRecord({
     status: response.status,
+    statusText: response.statusText,
     responseTime: response.responseTime,
     assertion: check.assert.statusCode === response.status,
     check: check._id,

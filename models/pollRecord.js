@@ -5,6 +5,7 @@ const schema = new Schema({
     type: Number,
     required: true,
   },
+  statusText: { type: String, required: true },
   responseTime: {
     type: Number,
     required: true,
