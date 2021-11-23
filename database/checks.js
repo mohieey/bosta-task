@@ -19,7 +19,10 @@ const getChecksByTag = async (userId, tag) => {
 };
 
 const deleteCheck = async (userId, checkId) => {
-  const deletedCheck = await Check.findOne({ user: userId, _id: checkId });
+  const deletedCheck = await Check.findOneAndDelete({
+    user: userId,
+    _id: checkId,
+  });
 
   return deletedCheck;
 };

@@ -15,7 +15,7 @@ module.exports = function (checks, tag) {
   aggregateReport.tag = tag;
   aggregateReport.date = new Date();
 
-  console.log(aggregateReport);
+  return aggregateReport;
 };
 
 const aggregateReports = (reports) => {
