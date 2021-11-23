@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const axios = require("axios");
-
+const { PORT, MongoConnectionString } = require("./env");
 //Routes
 const users = require("./routes/users");
 const verify = require("./routes/verify");
@@ -11,7 +10,7 @@ const reports = require("./routes/reports");
 const app = express();
 app.use(express.json());
 
-app.use("/api/user", users);
+app.use("/api/", users);
 app.use("/api/verify", verify);
 app.use("/api/check", checks);
 app.use("/api/report", reports);
@@ -20,49 +19,15 @@ app.get("/", (req, res) => {
   throw new Error("");
 });
 
-mongoose.connect("mongodb://localhost:27017/monitoringapp", () =>
-  console.log("Connected to MongoDB")
-);
+app.listen(PORT, () => {
+  console.log(`Listening on http://localhost:${PORT}`);
 
-app.listen(3000, () => {
-  console.log("Listening on http://localhost:3000");
+  console.log("Connecting to Database........");
+  mongoose
+    .connect(MongoConnectionString)
+    .then(() => console.log("Connected to MongoDB"))
+    .catch(() => {
+      console.log("Please provide a MongoDb connection string, and run again.");
+      process.exit();
+    });
 });
-
-// const checks = {};
-// const url = ["http://www.google.com", "https://www.gergu4begiu43bgfuiy.com"];
-
-// app.get("/", (req, res) => {
-//   const check = { id: Math.random(), times: [] };
-//   checks[check.id] = check;
-
-//   const h = setInterval(async () => {
-//     const start = Date.now();
-//     console.log(`Check NO is ${checks[check.id].id}`);
-//     let response;
-//     try {
-//       //   response = await axios.get(url[Math.floor(Math.random() * 2)]);
-//       response = await axios.get(url[1]);
-//       // response = await axios.get(url[0]);
-//     } catch (error) {
-//       console.log("fail no 1");
-//       for (let i = 1; i <= 2; i++) {
-//         try {
-//           response = await axios.get(url[1]);
-//         } catch (error) {
-//           console.log(`fail no ${i + 1}`);
-//           continue;
-//         }
-//       }
-//       return console.log("errr");
-//     }
-
-//     console.log(response.status);
-//     const end = Date.now();
-//     checks[check.id].times.push(end - start);
-//   }, 5000);
-//   res.send(check);
-// });
-
-// app.get("/r", (req, res) => {
-//   res.send(checks);
-// });

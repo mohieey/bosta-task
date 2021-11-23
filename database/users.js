@@ -1,19 +1,16 @@
-const jwt = require("jsonwebtoken");
-
 const crypto = require("crypto");
 
 const User = require("../models/user");
-const { salt, jwtPrivateKey } = require("../env");
+const hashPassword = require("../utils/hashPassword");
+const tokenGenerator = require("../utils/tokenGenerator");
 
 const addUser = (username, password, email) => {
-  password = crypto
-    .pbkdf2Sync(password, salt, 1000, 64, `sha512`)
-    .toString(`hex`);
+  password = hashPassword(password);
 
   const newUser = new User({ username, password, email });
   newUser.save();
 
-  return generateJWT({
+  return tokenGenerator({
     _id: newUser._id,
     username: newUser.username,
     email: newUser.email,
@@ -22,11 +19,6 @@ const addUser = (username, password, email) => {
 
 const getUser = async (username) => {
   return await User.findOne({ username: username });
-};
-
-const generateJWT = (user) => {
-  const token = jwt.sign(user, jwtPrivateKey);
-  return token;
 };
 
 const verifyUser = async (username) => {
