@@ -10,6 +10,7 @@ const {
 
 const router = express.Router();
 
+//Verify User
 router.get("/:code", [auth], (req, res) => {
   const code = req.params.code;
   const username = getUsernameToVerify(code);
