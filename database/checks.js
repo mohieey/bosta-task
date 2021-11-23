@@ -14,6 +14,10 @@ const getCheck = async (userId, checkId) => {
   );
 };
 
+const getChecksByTag = async (userId, tag) => {
+  return await Check.find({ tags: tag }).populate("pollRecords");
+};
+
 const deleteCheck = async (userId, checkId) => {
   const deletedCheck = await Check.findOne({ user: userId, _id: checkId });
 
@@ -46,6 +50,7 @@ const checkIfTheCheckHasMailsRegistered = async (checkId) => {
 module.exports = {
   addCheck,
   getCheck,
+  getChecksByTag,
   deleteCheck,
   updateCheck,
   getAllChecks,

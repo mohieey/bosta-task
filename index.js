@@ -16,9 +16,8 @@ app.use("/api/verify", verify);
 app.use("/api/check", checks);
 app.use("/api/report", reports);
 
-app.post("/", (req, res) => {
-  console.log(req.body.arr[0]);
-  res.send(req.body.arr[1]);
+app.get("/", (req, res) => {
+  throw new Error("");
 });
 
 mongoose.connect("mongodb://localhost:27017/monitoringapp", () =>

@@ -9,7 +9,7 @@ class NotifyService {
   }
 
   constructMessage(check, response, lastStatus) {
-    const message = `you check status with id:${check.id} and name:${check.name} for the url:${check.url},
+    const message = `your check status with id:${check.id} and name:${check.name} for the url:${check.url},
     has changed from ${lastStatus} to ${response.status}`;
 
     return message;
