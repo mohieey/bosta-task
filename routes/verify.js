@@ -6,7 +6,7 @@ const { verifyUser } = require("../database/users");
 const {
   getUsernameToVerify,
   deleteCode,
-} = require("../utils/emailVerification");
+} = require("../services/verificationService/emailVerification");
 
 const router = express.Router();
 

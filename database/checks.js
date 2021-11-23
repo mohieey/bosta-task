@@ -34,10 +34,20 @@ const getAllChecks = async (userId) => {
   return await Check.find({ user: userId });
 };
 
+const checkIfTheCheckHasMailsRegistered = async (checkId) => {
+  const check = Check.findOne({
+    _id: checkId,
+    "channels.mail.0": { $exists: true },
+  });
+
+  return check;
+};
+
 module.exports = {
   addCheck,
   getCheck,
   deleteCheck,
   updateCheck,
   getAllChecks,
+  checkIfTheCheckHasMailsRegistered,
 };

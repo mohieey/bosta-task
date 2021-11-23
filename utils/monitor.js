@@ -3,6 +3,7 @@ const getInstance = require("../utils/configureRequests");
 const PollRecord = require("../models/pollRecord");
 const Check = require("../models/check");
 const savePollRecord = require("../database/pollRecords");
+const notifyService = require("../services/notificationService/notifyService");
 
 const runningMonitors = {};
 
@@ -25,7 +26,12 @@ const watchGenerator = (check) => {
     // console.log(`Check NO is ${check}`);
 
     response = await poll(check);
-    if (response.status !== lastStatus) console.log("Notidiefd");
+    if (response.status !== lastStatus) {
+      // notify(check, response,lastStatus);
+      notifyService.notify(check, response, lastStatus);
+      console.log("Notidiefd");
+    }
+
     lastStatus = response.status;
     savePollRecord(check, response);
   }, check.interval);

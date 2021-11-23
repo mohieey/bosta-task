@@ -4,10 +4,10 @@ module.exports = function (check) {
   const schema = Joi.object({
     name: Joi.string().required(),
     url: Joi.string()
-      .pattern(RegExp(/[^\s$.?#].[^\s]*$/))
-      .messages({
-        "string.pattern.base": `"Invalid url`,
-      })
+      // .pattern(RegExp(/[^\s$.?#].[^\s]*$/))
+      // .messages({
+      //   "string.pattern.base": `"Invalid url`,
+      // })
       .required(),
     protocol: Joi.string().valid("http", "https", "tcp").required(),
     path: Joi.string()

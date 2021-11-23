@@ -59,6 +59,10 @@ const schema = new Schema({
   },
   lastStatus: { type: Number },
   user: { type: Schema.Types.ObjectId, required: true, ref: "User" },
+  channels: {
+    type: Object,
+    default: {},
+  },
 });
 
 schema.virtual("pollRecords", {

@@ -5,7 +5,7 @@ const validateUser = require("../utils/validateUser");
 const {
   generateCode,
   sendVerificationCode,
-} = require("../utils/emailVerification");
+} = require("../services/verificationService/emailVerification");
 
 const router = express.Router();
 

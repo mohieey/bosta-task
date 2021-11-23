@@ -1,4 +1,3 @@
-const Check = require("../models/check");
 const PollRecord = require("../models/pollRecord");
 const { updateCheck } = require("./checks");
 

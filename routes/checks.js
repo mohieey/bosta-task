@@ -58,7 +58,10 @@ router.post("/", [auth], (req, res) => {
   if (result.error)
     return res.status(400).send(result.error.details[0].message);
 
-  const newCheck = addCheck(req.user._id, req.body);
+  const newCheck = addCheck(req.user._id, {
+    ...req.body,
+    channels: { mail: [req.user.email] },
+  });
   startMonitoring(newCheck);
 
   return res.send(newCheck);
