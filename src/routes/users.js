@@ -19,11 +19,11 @@ router.post("/signup", async (req, res) => {
   const { username, password, email } = req.body;
 
   let user = await getUser(username);
-  if (user) return res.send("dublicate username!");
+  if (user) return res.status(400).send("dublicate username!");
 
   const token = addUser(username, password, email);
   const verificationCode = generateCode(username);
-  sendVerificationCode(username, email, verificationCode);
+  await sendVerificationCode(username, email, verificationCode);
 
   return res.status(201).send({ token });
 });

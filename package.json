@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "MongoConnectionString=mongodb://localhost:27017/testDatabase && jest --watch"
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js",
+    "test": "export MongoConnectionString=mongodb://localhost:27017/tDB && jest --watch"
   },
   "jest": {
     "testEnvironment": "node"

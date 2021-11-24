@@ -1,3 +1,4 @@
+require("./mongooseINIT");
 const express = require("express");
 //Routes
 const users = require("./routes/users");
