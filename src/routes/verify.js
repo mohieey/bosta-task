@@ -5,7 +5,6 @@ const tokenGenerator = require("../utils/tokenGenerator");
 
 const { verifyUser } = require("../database/users");
 const {
-  getUsernameToVerify,
   deleteCode,
   isValidCode,
 } = require("../services/verificationService/emailVerification");
@@ -21,6 +20,7 @@ router.get("/:code", [auth], async (req, res) => {
   if (!codeFromDB) return res.status(404).send("code not found");
 
   verifyUser(username);
+  deleteCode(code);
 
   const newToken = tokenGenerator({
     _id: req.user._id,
