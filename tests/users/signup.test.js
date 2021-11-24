@@ -87,7 +87,7 @@ describe("Testing the sign up route", () => {
     expect(res.body.token).not.toBe(null);
   });
 
-  it("should return 400 status code if the username is dublicatedl", async () => {
+  it("should return 400 status code if the username is dublicated", async () => {
     await new User({
       username: "testUser",
       password: "testPassword",

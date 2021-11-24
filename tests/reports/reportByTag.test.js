@@ -10,13 +10,13 @@ afterEach(async () => {
   await Check.deleteMany();
 });
 
-describe("Testing stopping check route", () => {
+describe("Testing single check report", () => {
   it("should return 401 status code if no token provided", async () => {
     const [u1] = await utils.generateDummyUsers();
     const checkForUser1 = await utils.generateDummyCheck(u1._id);
 
     await request(app)
-      .get("/api/check/stop/" + checkForUser1._id)
+      .get("/api/report/tag/" + checkForUser1.tags[0])
       .expect(401);
   });
 
@@ -31,27 +31,12 @@ describe("Testing stopping check route", () => {
     });
 
     await request(app)
-      .get("/api/check/stop/" + checkForUser1._id)
+      .get("/api/report/tag/" + checkForUser1.tags[0])
       .set("token", tokenForUser2)
       .expect(404);
   });
 
-  it("should return 400 status code if check id is invalid objectId", async () => {
-    const [u1] = await utils.generateDummyUsers();
-
-    const tokenForUser1 = tokenGenerator({
-      _id: u1._id,
-      username: u1.username,
-      email: u1.email,
-    });
-
-    await request(app)
-      .get("/api/check/stop/" + "urhgrgher")
-      .set("token", tokenForUser1)
-      .expect(400);
-  });
-
-  it("should return 200 status code if check is stopped", async () => {
+  it("should return 200 status code and the report with the correct tag", async () => {
     const [u1] = await utils.generateDummyUsers();
     const checkForUser1 = await utils.generateDummyCheck(u1._id);
 
@@ -61,9 +46,10 @@ describe("Testing stopping check route", () => {
       email: u1.email,
     });
 
-    await request(app)
-      .get("/api/check/stop/" + checkForUser1._id)
+    const res = await request(app)
+      .get("/api/report/tag/" + checkForUser1.tags[0])
       .set("token", tokenForUser1)
-      .expect(204);
+      .expect(200);
+    expect(res.body.tag).toBe(checkForUser1.tags[0]);
   });
 });

@@ -3,7 +3,7 @@ const app = require("../../src/app");
 const User = require("../../src/models/user");
 const Check = require("../../src/models/check");
 const tokenGenerator = require("../../src/utils/tokenGenerator");
-const utils = require("./utils");
+const utils = require("../utils");
 
 afterEach(async () => {
   await User.deleteMany();

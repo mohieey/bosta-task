@@ -3,7 +3,7 @@ const app = require("../../src/app");
 const User = require("../../src/models/user");
 const Check = require("../../src/models/check");
 const tokenGenerator = require("../../src/utils/tokenGenerator");
-const utils = require("./utils");
+const utils = require("../utils");
 
 afterEach(async () => {
   await User.deleteMany();
@@ -138,7 +138,7 @@ describe("Testing creating check route", () => {
       email: u1.email,
     });
 
-    await request(app)
+    const res = await request(app)
       .post("/api/check")
       .set("token", token)
       .send({
@@ -156,5 +156,7 @@ describe("Testing creating check route", () => {
         ignoreSSL: true,
       })
       .expect(201);
+    expect(res.body.name).toBe("testname");
+    expect(res.body.user).toBe(u1.id);
   });
 });

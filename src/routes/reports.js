@@ -22,7 +22,7 @@ router.get("/:id", [auth, validateIdInQueryParams], async (req, res) => {
 router.get("/tag/:tag", [auth], async (req, res, next) => {
   const checks = await getChecksByTag(req.user._id, req.params.tag);
   if (checks.length === 0)
-    return res.status(200).send("No Checks With This Tag");
+    return res.status(404).send("No Checks With This Tag");
 
   const report = generateReportByTag(checks, req.params.tag);
 

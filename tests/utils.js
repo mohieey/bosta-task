@@ -1,5 +1,5 @@
-const User = require("../../src/models/user");
-const Check = require("../../src/models/check");
+const User = require("../src/models/user");
+const Check = require("../src/models/check");
 
 module.exports.generateDummyUsers = async () => {
   const u1 = await new User({
