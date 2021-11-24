@@ -22,8 +22,8 @@ router.post("/signup", async (req, res) => {
   if (user) return res.status(400).send("dublicate username!");
 
   const token = addUser(username, password, email);
-  const verificationCode = generateCode(username);
-  await sendVerificationCode(username, email, verificationCode);
+  const code = await generateCode(username);
+  await sendVerificationCode(username, email, code);
 
   return res.status(201).send({ token });
 });
@@ -43,6 +43,7 @@ router.post("/signin", async (req, res) => {
     _id: user._id,
     username: user.username,
     email: user.email,
+    isVerified: user.isVerified,
   });
 
   return res.status(200).send({ token });

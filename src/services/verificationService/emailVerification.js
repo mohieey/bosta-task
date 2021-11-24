@@ -1,20 +1,21 @@
 const crypto = require("crypto");
 const mailAgent = require("../servicesInit/sgMail");
 const { fromMail } = require("../../env");
-
-//A table for codes and usernames associated with each code
-const codes = {};
+const VerificatioCode = require("../../models/verificationCode");
 
 const generateCode = (username) => {
   const code = crypto.randomBytes(20).toString("hex");
-  codes[code] = username;
+
+  const codeToDB = new VerificatioCode({ username, code });
+  codeToDB.save();
 
   return code;
 };
 
-const getUsernameToVerify = (code) => codes[code];
-
-const deleteCode = (code) => delete codes[code];
+const isValidCode = async (username, code) => {
+  code = await VerificatioCode.findOne({ username: username, code: code });
+  return code;
+};
 
 const sendVerificationCode = async (username, email, code) => {
   const msg = {
@@ -30,7 +31,6 @@ const sendVerificationCode = async (username, email, code) => {
 
 module.exports = {
   generateCode,
-  getUsernameToVerify,
-  deleteCode,
   sendVerificationCode,
+  isValidCode,
 };

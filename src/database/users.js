@@ -14,6 +14,7 @@ const addUser = (username, password, email) => {
     _id: newUser._id,
     username: newUser.username,
     email: newUser.email,
+    isVerified: newUser.isVerified,
   });
 };
 
