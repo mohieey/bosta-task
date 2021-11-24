@@ -1,4 +1,5 @@
 const mailChannel = require("./channels/mail/mailChannel");
+const webhookChannel = require("./channels/webhook/webhookChannel");
 
 class NotifyService {
   constructor() {
@@ -23,5 +24,6 @@ class NotifyService {
 
 const notifyService = new NotifyService();
 notifyService.addChannel(mailChannel);
+notifyService.addChannel(webhookChannel);
 
 module.exports = notifyService;
