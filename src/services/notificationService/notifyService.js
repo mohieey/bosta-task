@@ -1,4 +1,4 @@
-const mailChannel = require("./channels/mailChannel");
+const mailChannel = require("./channels/mail/mailChannel");
 
 class NotifyService {
   constructor() {

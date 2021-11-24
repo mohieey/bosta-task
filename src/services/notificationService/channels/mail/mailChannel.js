@@ -1,9 +1,7 @@
-const { fromMail } = require("../../../env");
-const mailAgent = require("../../servicesInit/sgMail");
+const { fromMail } = require("../../../../env");
+const mailAgent = require("../../../servicesInit/sgMail");
 
-const {
-  checkIfTheCheckHasMailsRegistered,
-} = require("../../../database/checks");
+const checkIfTheCheckHasMailsRegistered = require("./checkIfTheCheckHasMailsRegistered");
 
 class MailChannel {
   constructor(mailAgent) {
