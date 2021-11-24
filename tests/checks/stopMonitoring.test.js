@@ -10,13 +10,13 @@ afterEach(async () => {
   await Check.deleteMany();
 });
 
-describe("Testing deleting check route", () => {
+describe("Testing stopping check route", () => {
   it("should return 401 status code if no token provided", async () => {
     const [u1] = await utils.generateDummyUsers();
     const checkForUser1 = await utils.generateDummyCheck(u1._id);
 
     await request(app)
-      .delete("/api/check/" + checkForUser1._id)
+      .get("/api/check/stop/" + checkForUser1._id)
       .expect(401);
   });
 
@@ -31,7 +31,7 @@ describe("Testing deleting check route", () => {
     });
 
     await request(app)
-      .delete("/api/check/" + checkForUser1._id)
+      .get("/api/check/stop/" + checkForUser1._id)
       .set("token", tokenForUser2)
       .expect(404);
   });
@@ -46,12 +46,12 @@ describe("Testing deleting check route", () => {
     });
 
     await request(app)
-      .delete("/api/check/" + "urhgrgher")
+      .get("/api/check/stop/" + "urhgrgher")
       .set("token", tokenForUser1)
       .expect(400);
   });
 
-  it("should return 204 status code if check is deleted", async () => {
+  it("should return 200 status code if check is stopped", async () => {
     const [u1] = await utils.generateDummyUsers();
     const checkForUser1 = await utils.generateDummyCheck(u1._id);
 
@@ -62,7 +62,7 @@ describe("Testing deleting check route", () => {
     });
 
     await request(app)
-      .delete("/api/check/" + checkForUser1._id)
+      .get("/api/check/stop/" + checkForUser1._id)
       .set("token", tokenForUser1)
       .expect(204);
   });

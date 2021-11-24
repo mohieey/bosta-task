@@ -10,7 +10,7 @@ afterEach(async () => {
   await Check.deleteMany();
 });
 
-describe("Testing updateing check route", () => {
+describe("Testing getting check by id route", () => {
   it("should return 401 status code if no token provided", async () => {
     const [u1] = await utils.generateDummyUsers();
     const checkForUser1 = await utils.generateDummyCheck(u1._id);
@@ -51,7 +51,7 @@ describe("Testing updateing check route", () => {
       .expect(400);
   });
 
-  it("should return 200 status code if check is deleted", async () => {
+  it("should return 200 status code and the check", async () => {
     const [u1] = await utils.generateDummyUsers();
     const checkForUser1 = await utils.generateDummyCheck(u1._id);
 
@@ -61,9 +61,10 @@ describe("Testing updateing check route", () => {
       email: u1.email,
     });
 
-    await request(app)
+    const res = await request(app)
       .get("/api/check/" + checkForUser1._id)
       .set("token", tokenForUser1)
       .expect(200);
+    expect(res.body._id).toBe(checkForUser1.id);
   });
 });

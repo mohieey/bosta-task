@@ -72,7 +72,7 @@ router.get("/", [auth], async (req, res) => {
 //Stop Monitoring
 router.get("/stop/:id", [auth, validateIdInQueryParams], (req, res) => {
   const result = stopMonitoring(req.params.id + req.user._id);
-  if (!result) return res.send("invalid check");
+  if (!result) return res.status(404).send("not found");
 
   return res.status(204).send("stopped");
 });
@@ -80,7 +80,7 @@ router.get("/stop/:id", [auth, validateIdInQueryParams], (req, res) => {
 //Start Monitoring
 router.get("/start/:id", [auth, validateIdInQueryParams], async (req, res) => {
   const check = await getCheck(req.user._id, req.params.id);
-  if (!check) return res.send("invalid check");
+  if (!check) return res.status(404).send("not found");
 
   startMonitoring(check);
 
