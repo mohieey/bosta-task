@@ -88,7 +88,7 @@ describe("Testing the sign up route", () => {
   });
 
   it("should return 400 status code if the username is dublicatedl", async () => {
-    new User({
+    await new User({
       username: "testUser",
       password: "testPassword",
       email: "test@test.com",
