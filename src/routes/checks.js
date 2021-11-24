@@ -36,7 +36,7 @@ router.post("/", [auth], (req, res) => {
 router.delete("/:id", [auth, validateIdInQueryParams], async (req, res) => {
   const deletedCheck = await deleteCheck(req.user._id, req.params.id);
   console.log(deletedCheck);
-  if (!deletedCheck) return res.send("invalid check");
+  if (!deletedCheck) return res.status(404).send("invalid check");
 
   stopMonitoring(req.params.id + req.user._id);
 
@@ -51,7 +51,7 @@ router.put("/:id", [auth, validateIdInQueryParams], async (req, res) => {
 
   const updatedCheck = await updateCheck(req.user._id, req.params.id, req.body);
 
-  if (!updatedCheck) return res.send("invalid check");
+  if (!updatedCheck) return res.status(404).send("invalid check");
 
   return res.status(201).send("updated");
 });
