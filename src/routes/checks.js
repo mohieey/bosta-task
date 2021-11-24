@@ -13,7 +13,10 @@ const {
 
 const validateCheck = require("../utils/validateCheck");
 
-const { startMonitoring, stopMonitoring } = require("../utils/monitor");
+const {
+  startMonitoring,
+  stopMonitoring,
+} = require("../services/MonitoringService/monitor");
 
 const router = express.Router();
 
@@ -71,10 +74,10 @@ router.get("/", [auth], async (req, res) => {
 
 //Stop Monitoring
 router.get("/stop/:id", [auth, validateIdInQueryParams], (req, res) => {
-  const result = stopMonitoring(req.params.id + req.user._id);
+  const result = stopMonitoring(req.params.id, req.user._id);
   if (!result) return res.status(404).send("not found");
 
-  return res.status(204).send("stopped");
+  return res.status(200).send("stopped");
 });
 
 //Start Monitoring
@@ -84,7 +87,7 @@ router.get("/start/:id", [auth, validateIdInQueryParams], async (req, res) => {
 
   startMonitoring(check);
 
-  return res.status(204).send("started");
+  return res.status(200).send("started");
 });
 
 module.exports = router;

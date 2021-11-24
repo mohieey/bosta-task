@@ -64,6 +64,6 @@ describe("Testing starting check route", () => {
     await request(app)
       .get("/api/check/start/" + checkForUser1._id)
       .set("token", tokenForUser1)
-      .expect(204);
+      .expect(200);
   });
 });

@@ -15,7 +15,7 @@ const getCheck = async (userId, checkId) => {
 };
 
 const getChecksByTag = async (userId, tag) => {
-  return await Check.find({ tags: tag }).populate("pollRecords");
+  return await Check.find({ user: userId, tags: tag }).populate("pollRecords");
 };
 
 const deleteCheck = async (userId, checkId) => {

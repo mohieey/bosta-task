@@ -13,7 +13,6 @@ class MailChannel {
   notify(checkId, message) {
     checkIfTheCheckHasMailsRegistered(checkId).then((check) => {
       if (!check) return;
-      console.log(check);
       check.channels.mail.forEach((mail) => {
         const msg = {
           to: `${mail}`, // Change to your recipient

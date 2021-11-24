@@ -1,35 +1,43 @@
-const getInstance = require("../utils/configureRequests");
+const getInstance = require("../../utils/configureRequests");
 
-const PollRecord = require("../models/pollRecord");
-const Check = require("../models/check");
-const savePollRecord = require("../database/pollRecords");
-const notifyService = require("../services/notificationService/notifyService");
+const PollRecord = require("../../models/pollRecord");
+const Check = require("../../models/check");
+const savePollRecord = require("../../database/pollRecords");
+const notifyService = require("../notificationService/notifyService");
 
 const runningMonitors = {};
 
+const recoverFromOutages = (runningChecks) => {
+  runningChecks.forEach((check) => startMonitoring(check));
+};
+
 const startMonitoring = (check) => {
+  Check.findByIdAndUpdate(check._id, { running: true }).then();
   runningMonitors[check.id + check.user] = watchGenerator(check);
 };
 
-const stopMonitoring = (checkIdUserId) => {
-  if (!runningMonitors[checkIdUserId]) return false;
+const stopMonitoring = (checkId, userId) => {
+  if (!runningMonitors[checkId + userId]) return false;
 
-  clearInterval(runningMonitors[checkIdUserId]);
-  delete runningMonitors[checkIdUserId];
+  Check.findByIdAndUpdate(checkId, { running: false }).then();
+
+  clearInterval(runningMonitors[checkId + userId]);
+  delete runningMonitors[checkId + userId];
   return true;
 };
 
 const watchGenerator = (check) => {
-  let lastStatus;
+  let lastStatus = check.lastStatus || undefined;
   return setInterval(async () => {
-    console.log(`Check NO is ${check.name}`);
-    // console.log(`Check NO is ${check}`);
+    console.log(
+      `polling check with name: ${check.name} and id: ${check.id} for user: ${check.user}`
+    );
 
     response = await poll(check);
     if (response.status !== lastStatus) {
       // notify(check, response,lastStatus);
       notifyService.notify(check, response, lastStatus);
-      console.log("Notidiefd");
+      console.log(`Notified user ${check.user} for check ${check.name}`);
     }
 
     lastStatus = response.status;
@@ -87,4 +95,4 @@ const poll = async (check) => {
   return response;
 };
 
-module.exports = { startMonitoring, stopMonitoring };
+module.exports = { startMonitoring, stopMonitoring, recoverFromOutages };

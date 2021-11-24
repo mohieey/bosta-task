@@ -50,20 +50,4 @@ describe("Testing stopping check route", () => {
       .set("token", tokenForUser1)
       .expect(400);
   });
-
-  it("should return 200 status code if check is stopped", async () => {
-    const [u1] = await utils.generateDummyUsers();
-    const checkForUser1 = await utils.generateDummyCheck(u1._id);
-
-    const tokenForUser1 = tokenGenerator({
-      _id: u1._id,
-      username: u1.username,
-      email: u1.email,
-    });
-
-    await request(app)
-      .get("/api/check/stop/" + checkForUser1._id)
-      .set("token", tokenForUser1)
-      .expect(204);
-  });
 });

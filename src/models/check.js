@@ -63,6 +63,10 @@ const schema = new Schema({
     type: Object,
     default: {},
   },
+  running: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 schema.virtual("pollRecords", {
