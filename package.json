@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./src/index.js",
     "dev": "nodemon ./src/index.js",
-    "test": "export MongoConnectionString=mongodb://localhost:27017/tDB && jest --watch"
+    "test": "export MongoConnectionString=mongodb://monitorbotDB:27017/TDB && jest --watchAll"
   },
   "jest": {
     "testEnvironment": "node"

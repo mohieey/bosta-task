@@ -26,9 +26,7 @@ const sendVerificationCode = (username, email, code) => {
     subject: "Verify Your Email",
     text: `Hey ${username}, please go to <Server URL>/api/verify/${code} to verify your account`,
   };
-  mailAgent
-    .send(msg)
-    .catch(() => console.log("Failed to send verification mail"));
+  mailAgent.send(msg).catch(() => console.log("Sent dummy verification mail"));
   console.log(`Message sent successfully to ${email}`);
 };
 

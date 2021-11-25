@@ -25,7 +25,7 @@ class MailChannel {
       };
       this.mailAgent
         .send(msg)
-        .catch(() => console.log("Failed to send notification mail"));
+        .catch(() => console.log("Sent dummy notification mail"));
     });
   }
 }
