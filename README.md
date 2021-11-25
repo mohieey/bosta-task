@@ -12,7 +12,7 @@ There are two ways to run that project:
 
 ## **1- Using docker-compose (the recommended one)**
 
-- Download the docker-compose file from **[here](https://drive.google.com/file/d/1kIeGberJWFSlUiSNggkYF_acPQt0b7-_/view?usp=sharing)**
+- Download the docker-compose file from **[here](https://drive.google.com/file/d/1U4JyNph0LskJdxdcE7Hl0TMIatH4poSg/view?usp=sharing)**
 - Open the terminal in the same directory and hit `docker-compose up` and the server will be listening on port **3000**
 
 > **Note:** You have to provide a real SendGrid key and verified email inside the docker-compose.yml file placeholders, otherwise, all the mails will be replaced by dummy console logs.
