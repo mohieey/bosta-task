@@ -25,6 +25,10 @@ const schema = new Schema({
     type: String,
     default: "",
   },
+  pushover: {
+    type: Object,
+    default: {},
+  },
   timeout: {
     type: Number,
     default: 5000,

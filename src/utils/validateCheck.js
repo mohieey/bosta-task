@@ -30,6 +30,7 @@ module.exports = function (check) {
         "string.empty": `webhook cannot be an empty field, if you don't want to provide one, please remove it from the body`,
       })
       .optional(),
+    pushover: Joi.object().optional(),
     timeout: Joi.number()
       .messages({
         "number.base": `timeout cannot be an empty field, if you don't want to provide one, please remove it from the body`,
