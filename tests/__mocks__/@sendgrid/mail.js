@@ -2,5 +2,9 @@ module.exports = {
   setApiKey() {
     console.log("Mail sent");
   },
-  send() {},
+  send() {
+    return new Promise(function (resolve, reject) {
+      resolve();
+    });
+  },
 };
