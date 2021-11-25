@@ -15,7 +15,7 @@ class PushoverChannel {
 
       push.send("Status Change", message, function (err, res) {
         if (err) return console.log(err);
-        console.log("webhook notified");
+        console.log("pushover notified");
       });
     });
   }
