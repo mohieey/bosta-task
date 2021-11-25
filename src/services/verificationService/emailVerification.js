@@ -19,14 +19,16 @@ const isValidCode = async (username, code) => {
 
 const deleteCode = (code) => VerificatioCode.findOneAndDelete({ code }).then();
 
-const sendVerificationCode = async (username, email, code) => {
+const sendVerificationCode = (username, email, code) => {
   const msg = {
     to: `${email}`, // Change to your recipient
     from: fromMail, // Change to your verified sender
     subject: "Verify Your Email",
     text: `Hey ${username}, please go to <Server URL>/api/verify/${code} to verify your account`,
   };
-  await mailAgent.send(msg);
+  mailAgent
+    .send(msg)
+    .catch(() => console.log("Failed to send verification mail"));
   console.log(`Message sent successfully to ${email}`);
 };
 

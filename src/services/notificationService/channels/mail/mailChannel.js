@@ -23,7 +23,9 @@ class MailChannel {
         subject: "Status Changed",
         text: message,
       };
-      this.mailAgent.send(msg);
+      this.mailAgent
+        .send(msg)
+        .catch(() => console.log("Failed to send notification mail"));
     });
   }
 }
