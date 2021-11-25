@@ -8,6 +8,7 @@ const {
   sendVerificationCode,
 } = require("../services/verificationService/emailVerification");
 const tokenGenerator = require("../utils/tokenGenerator");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.post("/signup", async (req, res) => {
 
   const token = addUser(username, password, email);
   const code = generateCode(username);
-  await sendVerificationCode(username, email, code);
+  sendVerificationCode(username, email, code);
 
   return res.status(201).send({ token });
 });
@@ -47,6 +48,12 @@ router.post("/signin", async (req, res) => {
   });
 
   return res.status(200).send({ token });
+});
+
+router.get("/me", [auth], async (req, res) => {
+  let user = await getUser(req.user.username);
+  if (!user) return res.status(404).send("not found");
+  res.send(user);
 });
 
 module.exports = router;
