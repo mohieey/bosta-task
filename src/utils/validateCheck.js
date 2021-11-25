@@ -4,10 +4,10 @@ module.exports = function (check) {
   const schema = Joi.object({
     name: Joi.string().required(),
     url: Joi.string()
-      // .pattern(RegExp(/[^\s$.?#].[^\s]*$/))
-      // .messages({
-      //   "string.pattern.base": `"Invalid url`,
-      // })
+      .pattern(RegExp(/[^\s$.?#].[^\s]*$/))
+      .messages({
+        "string.pattern.base": `"Invalid url`,
+      })
       .required(),
     protocol: Joi.string().valid("http", "https", "tcp").required(),
     path: Joi.string()
@@ -32,16 +32,22 @@ module.exports = function (check) {
       .optional(),
     pushover: Joi.object().optional(),
     timeout: Joi.number()
+      .min(1000)
+      .integer()
       .messages({
         "number.base": `timeout cannot be an empty field, if you don't want to provide one, please remove it from the body`,
       })
       .optional(),
     interval: Joi.number()
+      .min(20000)
+      .integer()
       .messages({
         "number.base": `interval cannot be an empty field, if you don't want to provide one, please remove it from the body`,
       })
       .optional(),
     threshold: Joi.number()
+      .min(1)
+      .integer()
       .messages({
         "number.base": `threshold cannot be an empty field, if you don't want to provide one, please remove it from the body`,
       })
