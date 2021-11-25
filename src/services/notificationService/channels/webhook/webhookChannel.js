@@ -1,13 +1,18 @@
-const checkIfTheCheckHasWebhookRegistered = require("./checkIfTheCheckHasWebhookRegistered");
-
 class WebhookChannel {
   constructor() {}
 
-  notify(checkId, message) {
-    checkIfTheCheckHasWebhookRegistered(checkId).then((check) => {
-      if (!check) return;
-      console.log("webhook notified");
-      //Sending Post Request to the webhook..........
+  checkIfTheCheckHasWebhookRegistered({ webhook }) {
+    if (webhook[0]) return webhook;
+
+    return null;
+  }
+
+  notify(message, channels) {
+    const webhook = this.checkIfTheCheckHasWebhookRegistered(channels);
+    if (!webhook) return;
+    console.log("webhook notified");
+    webhook.forEach((url) => {
+      console.log(`posted to ${url}`, message);
     });
   }
 }

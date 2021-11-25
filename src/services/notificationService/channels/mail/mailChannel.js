@@ -1,26 +1,29 @@
 const { fromMail } = require("../../../../env");
 const mailAgent = require("../../../servicesInit/sgMail");
 
-const checkIfTheCheckHasMailsRegistered = require("./checkIfTheCheckHasMailsRegistered");
-
 class MailChannel {
   constructor(mailAgent) {
     this.mailAgent = mailAgent;
   }
 
-  notify(checkId, message) {
-    checkIfTheCheckHasMailsRegistered(checkId).then((check) => {
-      if (!check) return;
-      console.log("Mail Sent");
-      check.channels.mail.forEach((mail) => {
-        const msg = {
-          to: `${mail}`, // Change to your recipient
-          from: fromMail, // Change to your verified sender
-          subject: "Status Changed",
-          text: message,
-        };
-        this.mailAgent.send(msg);
-      });
+  checkIfTheCheckHasMailsRegistered({ mail }) {
+    if (mail[0]) return mail;
+
+    return null;
+  }
+
+  notify(message, channels) {
+    const mails = this.checkIfTheCheckHasMailsRegistered(channels);
+    if (!mails) return;
+    console.log("Mail Sent");
+    mails.forEach((mail) => {
+      const msg = {
+        to: `${mail}`, // Change to your recipient
+        from: fromMail, // Change to your verified sender
+        subject: "Status Changed",
+        text: message,
+      };
+      this.mailAgent.send(msg);
     });
   }
 }

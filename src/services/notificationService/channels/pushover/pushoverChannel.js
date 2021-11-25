@@ -1,21 +1,27 @@
 const Pushover = require("node-pushover");
-const checkIfTheCheckHasPushoverRegistered = require("./checkIfTheCheckHasPushoverRegistered");
 
 class PushoverChannel {
   constructor() {}
 
-  notify(checkId, message) {
-    checkIfTheCheckHasPushoverRegistered(checkId).then((check) => {
-      if (!check) return;
+  checkIfTheCheckHasPushoverRegistered({ pushover }) {
+    if (pushover[0]) return pushover;
 
-      const push = new Pushover({
-        token: check.pushover.APPTOKEN,
-        user: check.pushover.USERKEY,
-      });
+    return null;
+  }
+
+  notify(message, channels) {
+    const pushoverPairs = this.checkIfTheCheckHasPushoverRegistered(channels);
+    if (!pushoverPairs) return;
+    console.log("pushover notified");
+
+    pushoverPairs.forEach((pair) => {
+      const push = new Pushover({ token: pair.APPTOKEN, user: pair.USERKEY });
 
       push.send("Status Change", message, function (err, res) {
-        if (err) return console.log(err);
-        console.log("pushover notified");
+        if (err)
+          return console.log(
+            `pushover error for app with key ${pair.APPTOKEN}`
+          );
       });
     });
   }

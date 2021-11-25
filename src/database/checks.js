@@ -2,10 +2,24 @@
 const Check = require("../models/check");
 
 const addCheck = (userId, checkData) => {
-  const newCheck = new Check({ ...checkData, user: userId });
+  const newCheck = initializeCheckData(userId, checkData);
   newCheck.save();
 
   return newCheck;
+};
+
+const initializeCheckData = (userId, checkData) => {
+  const data = { ...checkData, user: userId };
+  data.channels = {
+    mail: [data.mail],
+    webhook: [data.webhook],
+    pushover: [data.pushover],
+  };
+  delete data.mail;
+  delete data.webhook;
+  delete data.pushover;
+
+  return new Check(data);
 };
 
 const getCheck = async (userId, checkId) => {

@@ -1,6 +1,7 @@
 const mailChannel = require("./channels/mail/mailChannel");
 const webhookChannel = require("./channels/webhook/webhookChannel");
 const pushoverChannel = require("./channels/pushover/pushoverChannel");
+const Check = require("../../models/check");
 
 class NotifyService {
   constructor() {
@@ -10,6 +11,11 @@ class NotifyService {
     this.channels.push(channel);
   }
 
+  async getCheckChannels(checkId) {
+    const channels = await Check.findById(checkId).select("channels");
+    return channels;
+  }
+
   constructMessage(check, response, lastStatus) {
     const message = `your check status with id:${check.id} and name:${check.name} for the url:${check.url},
     has changed from ${lastStatus} to ${response.status}`;
@@ -17,9 +23,14 @@ class NotifyService {
     return message;
   }
 
-  notify(check, response, lastStatus) {
+  async notify(check, response, lastStatus) {
     const message = this.constructMessage(check, response, lastStatus);
-    this.channels.forEach((channel) => channel.notify(check.id, message));
+    const { channels: channelsForCheck } = await this.getCheckChannels(
+      check.id
+    );
+    this.channels.forEach((channel) =>
+      channel.notify(message, channelsForCheck)
+    );
   }
 }
 

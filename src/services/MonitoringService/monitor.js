@@ -36,7 +36,7 @@ const watchGenerator = (check) => {
     response = await poll(check);
     if (response.status !== lastStatus) {
       // notify(check, response,lastStatus);
-      notifyService.notify(check, response, lastStatus);
+      await notifyService.notify(check, response, lastStatus);
       console.log(`Notified user ${check.user} for check ${check.name}`);
     }
 

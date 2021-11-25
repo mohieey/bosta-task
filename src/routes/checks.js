@@ -28,7 +28,7 @@ router.post("/", [auth], (req, res) => {
 
   const newCheck = addCheck(req.user._id, {
     ...req.body,
-    channels: { mail: [req.user.email] },
+    mail: req.user.email,
   });
   startMonitoring(newCheck);
 
