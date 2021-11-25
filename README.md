@@ -1,6 +1,6 @@
 # Bosta Backend Assessment!
 
-\*This is **MonitorBot**, a RESTful API server to monitor URLs and notify users whenever the status code changes and generate reports to analyze the availability, response time, and more of these URLs.
+This is **MonitorBot**, a RESTful API server to monitor URLs and notify users whenever the status code changes and generate reports to analyze the availability, response time, and more of these URLs.
 
 Currently, the users can be notified by **mail**, **webhooks**, or **pushover**, after creating an account the user receives an email to verify his/her account, then the user can monitor any number of URLs and stop and restart monitoring.
 
