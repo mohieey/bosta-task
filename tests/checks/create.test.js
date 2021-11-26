@@ -148,7 +148,7 @@ describe("Testing creating check route", () => {
         port: ":3001",
         webhook: "http://www.goo.com",
         timeout: "5000",
-        interval: "10000",
+        interval: "20000",
         threshold: "9",
         httpHeaders: {},
         assert: { statusCode: 400 },

@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 module.exports = function (check) {
   const schema = Joi.object({
-    name: Joi.string().required(),
+    name: Joi.string().alphanum().required(),
     url: Joi.string()
       .pattern(RegExp(/[^\s$.?#].[^\s]*$/))
       .messages({

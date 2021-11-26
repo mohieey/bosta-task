@@ -41,7 +41,7 @@ describe("Testing updateing check route", () => {
         port: ":3001",
         webhook: "http://www.goo.com",
         timeout: "5000",
-        interval: "10000",
+        interval: "20000",
         threshold: "9",
         httpHeaders: {},
         assert: { statusCode: 400 },
@@ -124,13 +124,13 @@ describe("Testing updateing check route", () => {
       .put("/api/check/" + checkForUser1._id)
       .set("token", tokenForUser1)
       .send({
-        name: "new name",
+        name: "newname",
         url: "wwww.google.com",
         protocol: "https",
         port: ":3001",
         webhook: "http://www.goo.com",
-        timeout: "5000",
-        interval: "10000",
+        timeout: "10000",
+        interval: "20000",
         threshold: "9",
         httpHeaders: {},
         assert: { statusCode: 400 },
