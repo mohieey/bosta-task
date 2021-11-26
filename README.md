@@ -1,4 +1,4 @@
-# Bosta Backend Assessment!
+# Bosta Backend Assessment
 
 This is **MonitorBot**, a RESTful API server to monitor URLs and notify users whenever the status code changes and generate reports to analyze the availability, response time, and more of these URLs.
 
@@ -26,9 +26,10 @@ There are two ways to run that project:
 - Now, the server is up and running on port **3000**
 
 > **Note:** You have to provide the following environment variables:
-> SendGrid key under the name **mailKey**, otherwise, all the mails will be replaced by dummy console logs.
-> Verified email to send messages from under the name **fromMail**, otherwise, all the mails will be replaced by dummy console logs.
-> A valid MongoDB connection string under the name **MongoConnectionString**, otherwise, the server will terminate.
+>
+> - SendGrid key under the name **mailKey**, otherwise, all the mails will be replaced by dummy console logs.
+> - Verified email to send messages from under the name **fromMail**, otherwise, all the mails will be replaced by dummy console logs.
+> - A valid MongoDB connection string under the name **MongoConnectionString**, otherwise, the server will terminate.
 
 # How to run the tests:
 
